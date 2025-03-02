@@ -9,11 +9,21 @@ type ValidFilter = "All" | "Active" | "Completed";
 export default async function Home({
   searchParams,
 }: {
-  searchParams: URLSearchParams;
+  searchParams: Promise<{ [key: string]: string | string[] }>;
 }) {
-  // Use URLSearchParams.get to retrieve the filter value
+  // Await searchParams (a plain object) and convert it into a URLSearchParams instance.
+  const paramsObj = await searchParams;
+  const sp = new URLSearchParams();
+  Object.entries(paramsObj).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((v) => sp.append(key, v));
+    } else {
+      sp.append(key, value);
+    }
+  });
+
   const validFilters: ValidFilter[] = ["All", "Active", "Completed"];
-  const filterParam = searchParams.get("filter");
+  const filterParam = sp.get("filter");
   const filter = validFilters.includes(filterParam as ValidFilter)
     ? (filterParam as ValidFilter)
     : "All";
