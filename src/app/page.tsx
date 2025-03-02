@@ -4,22 +4,19 @@ import AddSpan from "@/components/AddSpan";
 import ToDos from "../components/ToDos";
 import { createTodo } from "@/actions/actions";
 
-type ValidFilter = 'All' | 'Active' | 'Completed';
-
-type SearchParams = {
-  filter?: string;
-}
+type ValidFilter = "All" | "Active" | "Completed";
 
 export default async function Home({
   searchParams,
 }: {
-  searchParams: SearchParams
+  searchParams: URLSearchParams;
 }) {
-  // Validate the filter parameter
-  const validFilters: ValidFilter[] = ['All', 'Active', 'Completed'];
-  const filter = validFilters.includes(searchParams?.filter as ValidFilter) 
-    ? searchParams.filter as ValidFilter
-    : 'All';
+  // Use URLSearchParams.get to retrieve the filter value
+  const validFilters: ValidFilter[] = ["All", "Active", "Completed"];
+  const filterParam = searchParams.get("filter");
+  const filter = validFilters.includes(filterParam as ValidFilter)
+    ? (filterParam as ValidFilter)
+    : "All";
 
   return (
     <main className="text-white">
@@ -29,13 +26,12 @@ export default async function Home({
         alt="bitmap"
         width={1440}
         height={300}
-      >
-      </Image>
+      />
 
       <section className="w-[90%] md:w-[60%] mx-auto relative -top-[4rem] sm:-top-[5rem] lg:-top-[10rem]">
         <div className="flex justify-between items-center mb-5 sm:mb-8 md:mb-8">
           <h1 className="font-medium tracking-[0.25em] text-2xl">TODO</h1>
-          <BsSunFill size={20}/>
+          <BsSunFill size={20} />
         </div>
 
         <div className="flex flex-col gap-4">
