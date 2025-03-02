@@ -4,6 +4,8 @@ import AddSpan from "@/components/AddSpan";
 import ToDos from "../components/ToDos";
 import { createTodo } from "@/actions/actions";
 
+type ValidFilter = 'All' | 'Active' | 'Completed';
+
 type SearchParams = {
   filter?: string;
 }
@@ -14,9 +16,9 @@ export default async function Home({
   searchParams: SearchParams
 }) {
   // Validate the filter parameter
-  const validFilters = ['All', 'Active', 'Completed'] as const;
-  const filter = validFilters.includes(searchParams?.filter as any) 
-    ? searchParams.filter as typeof validFilters[number]
+  const validFilters: ValidFilter[] = ['All', 'Active', 'Completed'];
+  const filter = validFilters.includes(searchParams?.filter as ValidFilter) 
+    ? searchParams.filter as ValidFilter
     : 'All';
 
   return (
